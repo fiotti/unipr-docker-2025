@@ -1,14 +1,11 @@
-version: "3.8"
-
 services:
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:15.3
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      POSTGRES_PASSWORD: password
     volumes:
-      - "mysql-data:/var/lib/mysql"
+      - "postgres-data:/var/lib/postgresql/data"
   web-server:
     image: httpd:2.4
     ports:
@@ -17,4 +14,4 @@ services:
       - "./htdocs:/usr/local/apache2/htdocs"
 
 volumes:
-  mysql-data:
+  postgres-data:

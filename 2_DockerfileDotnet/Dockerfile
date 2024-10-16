@@ -1,20 +1,10 @@
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY "Example.csproj" .
-RUN dotnet restore "Example.csproj"
 COPY . .
-RUN dotnet build "Example.csproj" -c Release -o /app/build
+RUN dotnet build "2_DockerfileDotnet.csproj" -c Release -o /app/build
+RUN dotnet publish "2_DockerfileDotnet.csproj" -c Release -o /app/publish
 
-FROM build AS publish
-RUN dotnet publish "Example.csproj" -c Release -o /app/publish
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Example.dll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "2_DockerfileDotnet.dll"]
