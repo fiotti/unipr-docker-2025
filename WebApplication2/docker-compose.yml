@@ -1,0 +1,15 @@
+services:
+  webapplication2:
+    image: ${DOCKER_REGISTRY-}webapplication2
+    build:
+      context: .
+      dockerfile: WebApplication2/Dockerfile
+
+  clienttest3:
+    image: ${DOCKER_REGISTRY-}clienttest3
+    build:
+      context: .
+      dockerfile: ClientTest3/Dockerfile
+    ports:
+    - 8080:8080
+    - 8081:8081
